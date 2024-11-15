@@ -27,10 +27,50 @@ class Dgui:
         self.root.title(self.windowTitle)
         self.root.configure(bg=self.windowBackground)
 
-        self.getDatebasePage()
+        ### 组件初始化
+        self.storyText = """
+        Now you are a student of the driving school, \n
+        you can choose your ID and name and other information, \n
+        the ID can not be greater than the number of students.\n
+        Every day you can book a lesson for tomorrow, \n
+        the school system will randomly arrange the lesson."""
+        self.frameInitPlayer=tk.Frame(self.root,bg="white")
+        self.storyLabel=tk.Label(self.frameInitPlayer,text=self.storyText,font=("Arial"),width=50,height=10,bg='white')
+        self.storyLabel.pack()
+        self.nameLabel=tk.Label(self.frameInitPlayer,text="Name",font=("Arial"),width=10,height=2,bg=self.windowBackground)
+        self.nameLabel.place(x=200,y=200)
+        self.nameEntry=tk.Entry(self.frameInitPlayer,width=20)
+        self.nameEntry.place(x=400,y=210)
+
+        self.IDLabel=tk.Label(self.frameInitPlayer,text="ID",font=("Arial"),width=10,height=2,bg=self.windowBackground)
+        self.IDLabel.place(x=200,y=250)
+        self.IDEntry=tk.Entry(self.frameInitPlayer,width=20)
+        self.IDEntry.place(x=400,y=260)
+
+        self.ageLabel=tk.Label(self.frameInitPlayer,text="Age",font=("Arial"),width=10,height=2,bg=self.windowBackground)
+        self.ageLabel.place(x=200,y=300)
+        self.ageEntry=tk.Entry(self.frameInitPlayer,width=20)
+        self.ageEntry.place(x=400,y=310)
+
+        # 创建性别标签
+        self.genderLabel = tk.Label(self.frameInitPlayer, text="Gender", font=("Arial"), width=10, height=2, bg=self.windowBackground)
+        self.genderLabel.place(x=200, y=350)
+
+        # 创建变量用于存储性别选择
+        self.gender_var = tk.StringVar(value="male")  # 默认选择 male
+
+        # 创建单选按钮
+        self.male_radio = tk.Radiobutton(self.frameInitPlayer, text="Male", variable=self.gender_var, value="male", bg=self.windowBackground)
+        self.male_radio.place(x=400, y=360)
+
+        self.female_radio = tk.Radiobutton(self.frameInitPlayer, text="Female", variable=self.gender_var, value="female", bg=self.windowBackground)
+        self.female_radio.place(x=460, y=360)
+
         self.connectDatabaseFailLabel = tk.Label(self.root, text="Error connecting to database", fg="red", font=("Arial", 12), bg=self.windowBackground,heigh=2,width=38)
         self.createDatabaseFailLabel = tk.Label(self.root, text="Error creating database", fg="red", font=("Arial", 12), bg=self.windowBackground,heigh=2,width=38)
+        #############
 
+        self.getDatebasePage()
         self.root.protocol("WM_DELETE_WINDOW", self.rootClosing)
         self.root.mainloop()
 
@@ -133,13 +173,15 @@ class Dgui:
         ButtonConnectDatabase.place(x=280,y=480)
 
     def page2(self):
-        pass
+        self.frameInitPlayer.pack(fill="both",expand=True)
 
     def clear_widgets(self):
         for widget in self.root.winfo_children():
-            widget.destroy()
-        self.connectDatabaseFailLabel = tk.Label(self.root, text="Error connecting to database", fg="red", font=("Arial", 12), bg=self.windowBackground,heigh=2,width=38)
-        self.createDatabaseFailLabel = tk.Label(self.root, text="Error creating database", fg="red", font=("Arial", 12), bg=self.windowBackground,heigh=2,width=38)
+            if  widget != self.frameInitPlayer and \
+                widget != self.connectDatabaseFailLabel and \
+                widget != self.createDatabaseFailLabel:
+                widget.destroy()
+
 
 
 Gui=Dgui()
